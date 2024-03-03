@@ -933,12 +933,12 @@ hsa_status_t GpuAgent::GetInfo(hsa_agent_info_t attribute, void* value) const {
       if (core::hsa_internal_api_table_.image_api.hsa_ext_image_create_fn != NULL) {
         setFlag(HSA_EXTENSION_IMAGES);
       }
-
+/*
       if (os::LibHandle lib = os::LoadLib(kAqlProfileLib)) {
         os::CloseLib(lib);
         setFlag(HSA_EXTENSION_AMD_AQLPROFILE);
       }
-
+*/
       setFlag(HSA_EXTENSION_AMD_PROFILER);
 
       break;

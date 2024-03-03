@@ -41,6 +41,7 @@
 ################################################################################
 
 cmake_minimum_required ( VERSION 3.7 )
+cmake_policy(VERSION 3.7...3.26)
 
 ## Clear target dependency data.
 ## Needed to allow UI transitions between static and dynamic builds.

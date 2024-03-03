@@ -44,6 +44,11 @@ cmake_minimum_required ( VERSION 3.7 )
 
 # Import target 'clang'
 find_package(Clang REQUIRED HINTS ${CMAKE_PREFIX_PATH}/llvm PATHS /opt/rocm/llvm )
+find_package(AMDDeviceLibs REQUIRED)
+get_property(AMD_DEVICE_LIBS GLOBAL PROPERTY AMD_DEVICE_LIBS)
+list(GET AMD_DEVICE_LIBS 0 AMD_DEVICE_LIB_0)
+get_target_property(AMD_DEVICE_LIB_0_LOCATION ${AMD_DEVICE_LIB_0} IMPORTED_LOCATION)
+get_filename_component(AMD_DEVICE_LIBS_DIR "${AMD_DEVICE_LIB_0_LOCATION}" PATH)
 
 # Determine the target devices if not specified
 if (NOT DEFINED TARGET_DEVICES)
@@ -68,6 +73,7 @@ function(gen_kernel_bc TARGET_ID INPUT_FILE OUTPUT_FILE)
   separate_arguments(CLANG_ARG_LIST UNIX_COMMAND
     "-O2 -x cl -Xclang -finclude-default-header -cl-denorms-are-zero -cl-std=CL2.0
     -target amdgcn-amd-amdhsa -mcpu=${TARGET_ID} -mcode-object-version=4
+    --rocm-device-lib-path=${AMD_DEVICE_LIBS_DIR}
     -o ${OUTPUT_FILE} ${INPUT_FILE}")
 
   ## Add custom command to produce a code object file.
